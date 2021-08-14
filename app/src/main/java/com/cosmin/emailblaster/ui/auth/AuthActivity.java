@@ -5,10 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.cosmin.emailblaster.R;
@@ -54,6 +52,11 @@ public class AuthActivity extends AppCompatActivity {
                     finish();
                 }
         });
+    }
+
+    public void onDestroy(){
+        super.onDestroy();
+        loginViewModel.clear();
     }
 
     private void updateUiWithUser(LoggedInUserView model) {

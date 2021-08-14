@@ -1,0 +1,3 @@
+[submodule "ews-android-api"]
+	path = ews-android-api
+	url = https://github.com/alipov/ews-android-api.git

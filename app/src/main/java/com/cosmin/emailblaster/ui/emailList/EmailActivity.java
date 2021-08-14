@@ -1,7 +1,10 @@
-package com.cosmin.emailblaster;
+package com.cosmin.emailblaster.ui.emailList;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.cosmin.emailblaster.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +21,11 @@ import com.cosmin.emailblaster.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class EmailActivity extends AppCompatActivity {
+
+    public static Intent buildIntent(Context context) {
+        return new Intent(context, EmailActivity.class);
+    }
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;

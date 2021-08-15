@@ -23,7 +23,11 @@ public class EmailViewModel extends ViewModel {
         this.emailRepo = repo;
     }
 
-    public LiveData<Result<Email>> getEmailLD() {return mldEmail;}
+    public LiveData<Result<Email>> getEmailLD() { return mldEmail; }
 
+    public void fetchEmailByUniqueID(String uniqueID){
+        Email email = emailRepo.getEmail(uniqueID);
+        mldEmail.postValue(new Result.Success<>(email));
+    }
 
 }

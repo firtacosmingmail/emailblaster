@@ -3,39 +3,39 @@ package com.cosmin.emailblaster.ui.emailList;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.cosmin.emailblaster.R;
-import com.cosmin.emailblaster.ui.auth.AuthActivity;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.databinding.ActivityMainBinding;
+import com.cosmin.emailblaster.ui.auth.AuthActivity;
+import com.cosmin.emailblaster.ui.navigation.NavigationViewModel;
+import com.cosmin.emailblaster.ui.navigation.ScreenDestinations;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class EmailActivity extends AppCompatActivity {
 
-    public static Intent buildIntent(Context context) {
-        return new Intent(context, EmailActivity.class);
-    }
-
+    @Inject
+    public NavigationViewModel navVM;
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
     private EmailViewModel vm;
+
+    public static Intent buildIntent(Context context) {
+        return new Intent(context, EmailActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,11 @@ public class EmailActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
         vm = new ViewModelProvider(this).get(EmailViewModel.class);
+        navVM.getNavigationLD().observe(this, navigationData -> {
+            if (navigationData.getDestination() == ScreenDestinations.EMAIL_DETAILS) {
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_emailListFragment_to_emailFragment, navigationData.getData());
+            }
+        });
     }
 
     @Override

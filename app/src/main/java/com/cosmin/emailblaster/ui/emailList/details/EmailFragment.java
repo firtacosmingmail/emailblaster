@@ -16,31 +16,38 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cosmin.emailblaster.R;
+import com.cosmin.emailblaster.data.Result;
 import com.cosmin.emailblaster.data.model.Email;
+import com.cosmin.emailblaster.databinding.EmailFragmentBinding;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class EmailFragment extends Fragment implements LifecycleObserver {
 
+    private static final String EMAIL_ID_ARGUMENT_KEY = "EMAIL_ID_ARGUMENT_KEY";
+
     private EmailViewModel mViewModel;
-
-    public static EmailFragment newInstance(Email email) {
-
-        return new EmailFragment();
-    }
+    private EmailFragmentBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
         getViewLifecycleOwner().getLifecycle().addObserver(this);
-        return inflater.inflate(R.layout.email_fragment, container, false);
+        binding = EmailFragmentBinding.inflate(getLayoutInflater());
+        return binding.getRoot();
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    public void onCreated(){
+    public void onCreated() {
         mViewModel = new ViewModelProvider(this).get(EmailViewModel.class);
+        mViewModel.getEmailLD().observe(this, result -> {
+            if ( result instanceof Result.Success ) {
+                binding.setEmail(((Result.Success<Email>) result).getData());
+            }
+        });
+        mViewModel.fetchEmailByUniqueID(getArguments().getString(EMAIL_ID_ARGUMENT_KEY));
     }
 
 }

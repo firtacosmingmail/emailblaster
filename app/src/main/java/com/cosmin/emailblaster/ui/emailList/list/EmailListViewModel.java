@@ -1,5 +1,9 @@
 package com.cosmin.emailblaster.ui.emailList.list;
 
+import static com.cosmin.emailblaster.ui.navigation.ScreenDestinations.EMAIL_DETAILS;
+
+import android.os.Bundle;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +13,9 @@ import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.data.EmailRepository;
 import com.cosmin.emailblaster.data.Result;
 import com.cosmin.emailblaster.data.model.Email;
+import com.cosmin.emailblaster.ui.navigation.NavigationData;
+import com.cosmin.emailblaster.ui.navigation.NavigationViewModel;
+import com.cosmin.emailblaster.utils.SingleLiveEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +23,22 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
 
 @HiltViewModel
-public class EmailListViewModel extends ViewModel {
+public class EmailListViewModel extends ViewModel implements EmailSelectedListener {
+
+    public final static String EMAIL_ID_ARGUMENT_KEY = "EMAIL_ID_ARGUMENT_KEY";
 
     private final EmailRepository repo;
+    private final NavigationViewModel navVM;
     private final MutableLiveData<String> eventMLD = new MutableLiveData<>();
     private final MediatorLiveData<EmailListView> viewMLD = new MediatorLiveData<>();
     private List<Email> emailList;
 
     @Inject
-    public EmailListViewModel(EmailRepository repo) {
+    public EmailListViewModel(EmailRepository repo, NavigationViewModel navigationViewModel) {
         this.repo = repo;
+        this.navVM = navigationViewModel;
         viewMLD.addSource(repo.ldEmails, this::emailsReceived);
     }
 
@@ -72,4 +82,11 @@ public class EmailListViewModel extends ViewModel {
 
     public LiveData<String> getEventMLD() { return eventMLD; }
     public LiveData<EmailListView> getViewLD() { return viewMLD; }
+
+    @Override
+    public void onEmailSelected(Email selectedEmail) {
+        Bundle data = new Bundle();
+        data.putString(EMAIL_ID_ARGUMENT_KEY, selectedEmail.getUniqueID());
+        navVM.postNavigation(new NavigationData(EMAIL_DETAILS, data));
+    }
 }

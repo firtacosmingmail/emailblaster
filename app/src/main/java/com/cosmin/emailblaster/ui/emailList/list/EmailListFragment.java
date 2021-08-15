@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.databinding.EmailListFragmentBinding;
+import com.cosmin.emailblaster.ui.navigation.ScreenDestinations;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -49,7 +50,7 @@ public class EmailListFragment extends Fragment implements LifecycleObserver {
         mViewModel.getViewLD().observe(this, emailListView -> {
 
             if ( emailListView.emails != null && emailListView.emails.size() > 0) {
-                EmailListAdapter adapter = new EmailListAdapter();
+                EmailListAdapter adapter = new EmailListAdapter(mViewModel);
                 adapter.setEmails(emailListView.emails);
                 binding.setAdapter(adapter);
             }

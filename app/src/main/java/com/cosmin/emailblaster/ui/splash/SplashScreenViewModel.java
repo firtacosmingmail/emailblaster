@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cosmin.emailblaster.data.LoginRepository;
-import com.cosmin.emailblaster.data.Result;
+import com.cosmin.emailblaster.ui.navigation.ScreenDestinations;
 
 import javax.inject.Inject;
 
@@ -14,7 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class SplashScreenViewModel extends ViewModel {
 
-    private final MutableLiveData<SplashScreenDestination> destinationMutableLiveData = new MutableLiveData();
+    private final MutableLiveData<ScreenDestinations> destinationMutableLiveData = new MutableLiveData();
 
     private LoginRepository repo;
 
@@ -25,13 +25,13 @@ public class SplashScreenViewModel extends ViewModel {
 
     public void checkDestination(){
         if ( repo.isLoggedIn() ) {
-            destinationMutableLiveData.postValue(SplashScreenDestination.EMAILS);
+            destinationMutableLiveData.postValue(ScreenDestinations.EMAILS);
         } else {
-            destinationMutableLiveData.postValue(SplashScreenDestination.LOGIN);
+            destinationMutableLiveData.postValue(ScreenDestinations.LOGIN);
         }
     }
 
-    public LiveData<SplashScreenDestination> getDestinationLD() {return destinationMutableLiveData; }
+    public LiveData<ScreenDestinations> getDestinationLD() {return destinationMutableLiveData; }
 
 
 }

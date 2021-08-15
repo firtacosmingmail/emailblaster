@@ -7,6 +7,7 @@ public class Email {
     EmailSender sender;
     String message;
     String subject;
+
     String uniqueID;
     public Email(
             EmailSender sender,
@@ -55,5 +56,13 @@ public class Email {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 }

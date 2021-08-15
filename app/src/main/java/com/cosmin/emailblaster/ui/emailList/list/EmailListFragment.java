@@ -18,7 +18,10 @@ import android.view.ViewGroup;
 
 import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.databinding.EmailListFragmentBinding;
+import com.cosmin.emailblaster.ui.navigation.NavigationViewModel;
 import com.cosmin.emailblaster.ui.navigation.ScreenDestinations;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -57,10 +60,6 @@ public class EmailListFragment extends Fragment implements LifecycleObserver {
 
             binding.setView(emailListView);
             binding.executePendingBindings();
-        });
-        mViewModel.getEventMLD().observe(this, destination -> {
-            NavHostFragment.findNavController(EmailListFragment.this)
-                    .navigate(R.id.action_emailListFragment_to_emailFragment);
         });
         mViewModel.fragmentCreated();
     }

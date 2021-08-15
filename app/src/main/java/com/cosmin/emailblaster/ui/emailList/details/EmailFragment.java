@@ -47,7 +47,14 @@ public class EmailFragment extends Fragment implements LifecycleObserver {
                 binding.setEmail(((Result.Success<Email>) result).getData());
             }
         });
-        mViewModel.fetchEmailByUniqueID(getArguments().getString(EMAIL_ID_ARGUMENT_KEY));
+        if ( getArguments() != null ) {
+            mViewModel.fetchEmailByUniqueID(getArguments().getString(EMAIL_ID_ARGUMENT_KEY));
+        }
     }
 
+    public void update(Bundle dataForDetails) {
+        if ( mViewModel != null ) {
+            mViewModel.fetchEmailByUniqueID(dataForDetails.getString(EMAIL_ID_ARGUMENT_KEY));
+        }
+    }
 }

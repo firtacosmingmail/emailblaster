@@ -28,4 +28,6 @@
     <string name="error_logging_in">Error Loging in. Please try again.</string>
     <string name="email_list_title">Inbox</string>
     <string name="email_title">Email</string>
+    <string name="email_list_fragment_tag">EmailListFragmentTag</string>
+    <string name="email_details_fragment_tag">EmailDetailsFragmentTag</string>
 </resources>

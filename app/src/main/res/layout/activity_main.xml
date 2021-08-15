@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.cosmin.emailblaster.ui.navigation.ScreenDestinations"/>
+
+        <variable
+            name="view"
+            type="com.cosmin.emailblaster.ui.emailList.EmailActivityView" />
+    </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -20,5 +31,8 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/content_main"
+        android:id="@+id/content"
+        bind:view="@{view}"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

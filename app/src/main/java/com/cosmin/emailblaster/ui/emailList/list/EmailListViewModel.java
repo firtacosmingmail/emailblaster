@@ -65,7 +65,7 @@ public class EmailListViewModel extends ViewModel implements EmailSelectedListen
     }
 
     public void fragmentCreated() {
-        this.repo.fetchEmails(true);
+        this.repo.fetchEmails(false);
         showLoading();
     }
 

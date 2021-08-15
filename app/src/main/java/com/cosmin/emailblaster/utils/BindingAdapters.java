@@ -1,5 +1,6 @@
 package com.cosmin.emailblaster.utils;
 
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -35,6 +36,8 @@ public class BindingAdapters {
     @BindingAdapter("htmlText")
     public static void setHTMLTextToWebView(WebView view, String htmlText) {
         if ( htmlText != null ) {
+            view.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+            view.getSettings().setUseWideViewPort(false);
             String mimeType = "text/html";
             String encoding = "utf-8";
             // Load html source code into webview to show the html content.

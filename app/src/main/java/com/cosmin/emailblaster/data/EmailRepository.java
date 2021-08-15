@@ -20,6 +20,7 @@ public class EmailRepository {
     private final EmailDataSource dataSource;
 
     private Map<String,Email> emails = null;
+    private ArrayList<Email> emailList = null;
 
     private final MediatorLiveData<Result<List<Email>>> mldEmails = new MediatorLiveData<>();
     public LiveData<Result<List<Email>>> ldEmails = mldEmails;
@@ -34,17 +35,17 @@ public class EmailRepository {
         if ( result instanceof Result.Success ) {
             List<EmailMessage> emailList = ((Result.Success<List<EmailMessage>>) result).getData();
             emails = new HashMap<>();
-            List<Email> returnList = new ArrayList();
+            this.emailList = new ArrayList();
             for ( EmailMessage email : emailList ) {
                 try {
                     Email emailToSave = new Email((email));
                     emails.put(email.getId().getUniqueId(), emailToSave);
-                    returnList.add(emailToSave);
+                    this.emailList.add(emailToSave);
                 } catch (ServiceLocalException e) {
                     e.printStackTrace();
                 }
             }
-            mldEmails.postValue(new Result.Success<>(returnList));
+            mldEmails.postValue(new Result.Success<>(this.emailList));
         } else {
             mldEmails.postValue(result);
         }
@@ -54,6 +55,8 @@ public class EmailRepository {
     public LiveData<Result<List<Email>>> fetchEmails(boolean refresh) {
         if ( emails == null || refresh) {
             dataSource.fetchInboxEmails(userContext.getExchangeService());
+        } else {
+            mldEmails.postValue(new Result.Success<>(emailList));
         }
         return ldEmails;
     }

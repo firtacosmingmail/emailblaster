@@ -10,8 +10,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.emailList.details.EmailFragment"
-    android:layout_marginTop="10dp"
-    android:layout_marginHorizontal="5dp">
+    android:layout_marginTop="20dp"
+    android:layout_marginHorizontal="10dp">
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txt_subject"
         android:layout_width="match_parent"
@@ -27,7 +27,7 @@
         android:id="@+id/lbl_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_subject"
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/from"
@@ -40,7 +40,6 @@
         android:layout_marginStart="5dp"
         app:layout_constraintTop_toTopOf="@+id/lbl_from"
         app:layout_constraintStart_toEndOf="@id/lbl_from"
-        app:layout_constraintBottom_toBottomOf="@id/lbl_from"
         android:text="@{email.sender.toString()}"
         tools:text="Joda(master@jedi.univ)"
         style="@style/Text.email.from"
@@ -48,6 +47,7 @@
     <WebView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/txt_from"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

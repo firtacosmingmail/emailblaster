@@ -18,9 +18,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MediatorLiveData<LoginResult> loginResult = new MediatorLiveData<>();
-    private LoginRepository loginRepository;
+    private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private final MediatorLiveData<LoginResult> loginResult = new MediatorLiveData<>();
+    private final LoginRepository loginRepository;
 
     public ObservableField<String> email = new ObservableField<>();
     public ObservableField<String> password = new ObservableField<>();
@@ -45,12 +45,12 @@ public class LoginViewModel extends ViewModel {
         return loginFormState;
     }
 
-    void clear() {
-        loginResult.removeSource(loginRepository.ldUser);
-    }
-
     LiveData<LoginResult> getLoginResult() {
         return loginResult;
+    }
+
+    void clear() {
+        loginResult.removeSource(loginRepository.ldUser);
     }
 
     public void login() {

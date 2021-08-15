@@ -77,6 +77,7 @@ public class EmailDataSource {
                     propSet.add(ItemSchema.Body);
                     propSet.add(ItemSchema.Subject);
                     propSet.add(ItemSchema.MimeContent);
+                    propSet.add(ItemSchema.Id);
                     EmailMessage em = EmailMessage.bind(service, item.getId(), propSet);
                     emails.add(em);
                 }

@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
 
         setSupportActionBar(null);
         vm = new ViewModelProvider(this).get(SplashScreenViewModel.class);
-        vm.destinationLiveData.observe(this, destination -> {
+        vm.getDestinationLD().observe(this, destination -> {
             switch (destination) {
                 case LOGIN: openAuthActivity();
                 break;

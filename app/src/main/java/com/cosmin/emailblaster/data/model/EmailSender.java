@@ -1,5 +1,7 @@
 package com.cosmin.emailblaster.data.model;
 
+import androidx.annotation.NonNull;
+
 public class EmailSender {
     String name;
     String address;
@@ -12,6 +14,11 @@ public class EmailSender {
 
     public String getName() {
         return name;
+    }
+
+    @NonNull
+    public String toString(){
+        return this.name+"("+this.address+")";
     }
 
     public void setName(String name) {

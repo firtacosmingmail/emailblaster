@@ -4,6 +4,7 @@ import com.cosmin.emailblaster.data.EmailDataSource;
 import com.cosmin.emailblaster.data.EmailRepository;
 import com.cosmin.emailblaster.data.LoginRepository;
 import com.cosmin.emailblaster.data.model.UserContext;
+import com.cosmin.emailblaster.ui.navigation.NavigationViewModel;
 
 import javax.inject.Singleton;
 
@@ -38,4 +39,8 @@ public class AppModule {
     UserContext provideUserContext(){
         return new UserContext();
     }
+
+    @Provides
+    @Singleton
+    NavigationViewModel provideNavigationViewModel(){ return new NavigationViewModel(); }
 }

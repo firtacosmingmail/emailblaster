@@ -1,5 +1,8 @@
 package com.cosmin.emailblaster.utils;
 
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
@@ -27,6 +30,19 @@ public class BindingAdapters {
     public static void setHTMLTextStringId(AppCompatTextView view, String htmlText) {
         if ( htmlText != null ) {
             view.setText(HtmlCompat.fromHtml(htmlText, 0));
+        }
+    }
+
+    @BindingAdapter("htmlText")
+    public static void setHTMLTextToWebView(WebView view, String htmlText) {
+        if ( htmlText != null ) {
+            view.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
+            view.getSettings().setUseWideViewPort(false);
+            String mimeType = "text/html";
+            String encoding = "utf-8";
+            // Load html source code into webview to show the html content.
+            view.loadDataWithBaseURL(null, htmlText, mimeType, encoding, null);
+
         }
     }
 

@@ -3,6 +3,7 @@ package com.cosmin.emailblaster.ui.emailList.list;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -21,6 +22,11 @@ import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
 public class EmailListAdapter extends BindableRecyclerViewAdapter<EmailItemViewHolder> {
 
     private List<Email> emails;
+    private final  EmailSelectedListener itemSelectedListener;
+
+    public EmailListAdapter(EmailSelectedListener itemSelectedListener){
+        this.itemSelectedListener = itemSelectedListener;
+    }
 
     @NonNull
     @Override
@@ -28,7 +34,7 @@ public class EmailListAdapter extends BindableRecyclerViewAdapter<EmailItemViewH
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         EmailListItemBinding itemBinding = DataBindingUtil.inflate(inflater, R.layout.email_list_item, parent, false);
 
-        return new EmailItemViewHolder(itemBinding.getRoot(), itemBinding);
+        return new EmailItemViewHolder(itemBinding.getRoot(), itemBinding, itemSelectedListener);
     }
 
     @Override

@@ -11,9 +11,14 @@ import com.cosmin.emailblaster.databinding.EmailListItemBinding;
 public class EmailItemViewHolder extends RecyclerView.ViewHolder {
     EmailListItemBinding binding;
     Email email;
-    public EmailItemViewHolder(@NonNull View itemView, EmailListItemBinding binding) {
+    EmailSelectedListener itemSelectedListener;
+    public EmailItemViewHolder(@NonNull View itemView, EmailListItemBinding binding, EmailSelectedListener itemSelectedListener) {
         super(itemView);
         this.binding = binding;
+        this.itemSelectedListener = itemSelectedListener;
+        itemView.setOnClickListener( view -> {
+            itemSelectedListener.onEmailSelected(email);
+        });
     }
 
     void setEmail(Email email) {

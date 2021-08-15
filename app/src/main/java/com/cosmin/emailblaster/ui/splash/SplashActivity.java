@@ -9,7 +9,9 @@ import com.cosmin.emailblaster.databinding.ActivitySplashBinding;
 import com.cosmin.emailblaster.ui.auth.AuthActivity;
 import com.cosmin.emailblaster.ui.emailList.EmailActivity;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class SplashActivity extends AppCompatActivity {
 
     private ActivitySplashBinding binding;
@@ -27,9 +29,12 @@ public class SplashActivity extends AppCompatActivity {
         vm.destinationLiveData.observe(this, destination -> {
             switch (destination) {
                 case LOGIN: openAuthActivity();
+                break;
                 case EMAILS: openEmailsActivity();
+                break;
             }
         });
+        vm.checkDestination();
     }
 
     private void openAuthActivity() {

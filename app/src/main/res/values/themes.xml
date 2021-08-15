@@ -24,4 +24,10 @@
     <style name="Theme.EmailBlaster.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.EmailBlaster.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Text.error" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/error_text</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

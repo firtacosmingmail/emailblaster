@@ -116,6 +116,19 @@
         app:layout_constraintVertical_bias="0.3"
         />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Text.error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:layout_marginTop="260dp"
+        app:text='@{view.generalError}'
+        android:visibility="@{view.generalError != null ? View.VISIBLE : View.INVISIBLE}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/login"
+        tools:text="lkasdn;fkan sdlnf" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

@@ -1,17 +1,15 @@
 package com.cosmin.emailblaster.ui.auth;
 
-import androidx.core.content.ContextCompat;
+import android.util.Patterns;
+
 import androidx.databinding.ObservableField;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
 import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.data.LoginRepository;
-import com.cosmin.emailblaster.data.Result;
-import com.cosmin.emailblaster.data.model.LoggedInUser;
 
 import javax.inject.Inject;
 
@@ -21,7 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class LoginViewModel extends ViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    private MediatorLiveData<LoginResult> loginResult = new MediatorLiveData<>();
     private LoginRepository loginRepository;
 
     public ObservableField<String> email = new ObservableField<>();
@@ -30,10 +28,25 @@ public class LoginViewModel extends ViewModel {
     @Inject
     LoginViewModel(LoginRepository loginRepository) {
         this.loginRepository = loginRepository;
+
+        loginResult.addSource(loginRepository.ldUser, result -> {
+            hideLoading();
+            if ( result != null ) {
+                loginResult.setValue(new LoginResult(new LoggedInUserView(result.getUser().getEmail())));
+            } else {
+                LoginFormState state = new LoginFormState();
+                state.setGeneralError(R.string.error_logging_in);
+                loginFormState.setValue(state);
+            }
+        });
     }
 
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
+    }
+
+    void clear() {
+        loginResult.removeSource(loginRepository.ldUser);
     }
 
     LiveData<LoginResult> getLoginResult() {
@@ -44,15 +57,20 @@ public class LoginViewModel extends ViewModel {
         if ( haveFieldsErrors(email.get(), password.get()) ) {
             return;
         }
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(email.get(), password.get());
+        printLoading();
+        loginRepository.login(email.get(), password.get());
+    }
 
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+    private void printLoading() {
+        LoginFormState state = new LoginFormState(null, null);
+        state.setLoading(true);
+        loginFormState.postValue(state);
+    }
+
+    private void hideLoading(){
+        LoginFormState state = new LoginFormState(null, null);
+        state.setLoading(false);
+        loginFormState.postValue(state);
     }
 
     public boolean haveFieldsErrors(String username, String password) {

@@ -1,47 +1,44 @@
 package com.cosmin.emailblaster.data;
 
-import com.cosmin.emailblaster.data.model.LoggedInUser;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
-/**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
- */
+import com.cosmin.emailblaster.data.model.UserContext;
+
+import microsoft.exchange.webservices.data.core.ExchangeService;
+
 public class LoginRepository {
 
-    private static volatile LoginRepository instance;
+    private final UserContext userContext;
+    private final EmailDataSource dataSource;
 
-    private LoginDataSource dataSource;
+    private final MediatorLiveData<UserContext> mldLogin = new MediatorLiveData<>();
+    public LiveData<UserContext> ldUser = mldLogin;
 
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
-    private LoggedInUser user = null;
-
-    // private constructor : singleton access
-    public LoginRepository(LoginDataSource dataSource) {
+    public LoginRepository(EmailDataSource dataSource, UserContext userContext) {
         this.dataSource = dataSource;
+        this.userContext = userContext;
     }
 
     public boolean isLoggedIn() {
-        return user != null;
+        return userContext.getUser() != null;
     }
 
     public void logout() {
-        user = null;
-        dataSource.logout();
+        userContext.clear();
+        mldLogin.postValue(null);
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
-        this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-    }
-
-    public Result<LoggedInUser> login(String username, String password) {
-        // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
-        if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
-        }
-        return result;
+    public LiveData<UserContext> login(String email, String password) {
+        mldLogin.addSource(dataSource.login(email, password), result -> {
+            mldLogin.removeSource(dataSource.LDUser);
+            if ( result.getClass() == Result.Success.class){
+                userContext.saveContext(email, password, ((Result.Success<ExchangeService>) result).getData());
+                mldLogin.postValue(userContext);
+            } else {
+                mldLogin.postValue(null);
+            }
+        });
+        return ldUser;
     }
 }

@@ -1,8 +1,9 @@
 package com.cosmin.emailblaster.di;
 
-import com.cosmin.emailblaster.data.LoginDataSource;
+import com.cosmin.emailblaster.data.EmailDataSource;
+import com.cosmin.emailblaster.data.EmailRepository;
 import com.cosmin.emailblaster.data.LoginRepository;
-import com.cosmin.emailblaster.data.model.LoggedInUser;
+import com.cosmin.emailblaster.data.model.UserContext;
 
 import javax.inject.Singleton;
 
@@ -15,12 +16,26 @@ import dagger.hilt.components.SingletonComponent;
 @InstallIn(SingletonComponent.class)
 public class AppModule {
     @Provides
-    LoginRepository provideLoginRepo(LoginDataSource loginDataSource) {
-        return new LoginRepository(loginDataSource);
+    @Singleton
+    LoginRepository provideLoginRepo(EmailDataSource emailDataSource, UserContext userContext) {
+        return new LoginRepository(emailDataSource, userContext);
     }
 
     @Provides
-    LoginDataSource provideLoginDataSource() {
-        return new LoginDataSource();
+    @Singleton
+    EmailRepository provideEmailRepository(EmailDataSource emailDataSource, UserContext userContext) {
+        return new EmailRepository(emailDataSource, userContext);
+    }
+
+    @Provides
+    @Singleton
+    EmailDataSource provideLoginDataSource() {
+        return new EmailDataSource();
+    }
+
+    @Provides
+    @Singleton
+    UserContext provideUserContext(){
+        return new UserContext();
     }
 }

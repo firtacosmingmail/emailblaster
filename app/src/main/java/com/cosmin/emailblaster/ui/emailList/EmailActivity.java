@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cosmin.emailblaster.R;
+import com.cosmin.emailblaster.ui.auth.AuthActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,6 +23,9 @@ import com.cosmin.emailblaster.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EmailActivity extends AppCompatActivity {
 
     public static Intent buildIntent(Context context) {
@@ -29,6 +34,8 @@ public class EmailActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+
+    private EmailViewModel vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +49,8 @@ public class EmailActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        vm = new ViewModelProvider(this).get(EmailViewModel.class);
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +76,10 @@ public class EmailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            vm.logout();
+            startActivity(AuthActivity.buildIntent(this));
+            finish();
             return true;
         }
 

@@ -14,8 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class SplashScreenViewModel extends ViewModel {
 
-    private MutableLiveData<SplashScreenDestination> destinationMutableLiveData = new MutableLiveData();
-    public LiveData<SplashScreenDestination> destinationLiveData = destinationMutableLiveData;
+    private final MutableLiveData<SplashScreenDestination> destinationMutableLiveData = new MutableLiveData();
 
     private LoginRepository repo;
 
@@ -31,6 +30,8 @@ public class SplashScreenViewModel extends ViewModel {
             destinationMutableLiveData.postValue(SplashScreenDestination.LOGIN);
         }
     }
+
+    public LiveData<SplashScreenDestination> getDestinationLD() {return destinationMutableLiveData; }
 
 
 }

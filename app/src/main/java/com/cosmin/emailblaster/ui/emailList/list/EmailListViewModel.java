@@ -9,7 +9,6 @@ import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.data.EmailRepository;
 import com.cosmin.emailblaster.data.Result;
 import com.cosmin.emailblaster.data.model.Email;
-import com.cosmin.emailblaster.data.model.EmailSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,34 +16,25 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import microsoft.exchange.webservices.data.core.PropertySet;
-import microsoft.exchange.webservices.data.core.enumeration.property.BasePropertySet;
-import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
-import microsoft.exchange.webservices.data.core.service.schema.ItemSchema;
-import microsoft.exchange.webservices.data.property.complex.EmailAddress;
 
 @HiltViewModel
 public class EmailListViewModel extends ViewModel {
 
     private final EmailRepository repo;
+    private final MutableLiveData<String> eventMLD = new MutableLiveData<>();
+    private final MediatorLiveData<EmailListView> viewMLD = new MediatorLiveData<>();
     private List<Email> emailList;
 
-    private MutableLiveData<String> eventMLD = new MutableLiveData<>();
-    public LiveData<String> eventLD = eventMLD;
-
-    private MediatorLiveData<EmailListView> viewMLD = new MediatorLiveData<>();
-    public LiveData<EmailListView> viewLD = viewMLD;
-
     @Inject
-    public EmailListViewModel(EmailRepository repo){
+    public EmailListViewModel(EmailRepository repo) {
         this.repo = repo;
         viewMLD.addSource(repo.ldEmails, this::emailsReceived);
     }
 
-    public void emailsReceived(Result<List<EmailMessage>> result){
-        if ( result instanceof Result.Success ) {
-            addEmailsToList(((Result.Success<List<EmailMessage>>) result).getData());
+    public void emailsReceived(Result<List<Email>> result) {
+        if (result instanceof Result.Success) {
+            addEmailsToList(((Result.Success<List<Email>>) result).getData());
         } else {
             sendError();
         }
@@ -56,26 +46,9 @@ public class EmailListViewModel extends ViewModel {
         viewMLD.postValue(view);
     }
 
-    private void addEmailsToList(List<EmailMessage> data) {
+    private void addEmailsToList(List<Email> data) {
         emailList = new ArrayList<>();
-        for ( EmailMessage emailMessage : data ) {
-            try {
-                emailList.add(
-                        new Email(
-                            new EmailSender(
-                                    emailMessage.getSender().getName(),
-                                    emailMessage.getSender().getAddress()
-                            ),
-                            emailMessage.getBody().toString(),
-                            emailMessage.getSubject()
-                        )
-                    );
-            } catch (ServiceLocalException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        emailList.addAll(data);
         EmailListView view = new EmailListView();
         view.emails = emailList;
         viewMLD.postValue(view);
@@ -86,7 +59,7 @@ public class EmailListViewModel extends ViewModel {
         showLoading();
     }
 
-    public void refreshEmail(){
+    public void refreshEmail() {
         this.repo.fetchEmails(true);
         showLoading();
     }
@@ -96,4 +69,7 @@ public class EmailListViewModel extends ViewModel {
         view.loading = true;
         viewMLD.postValue(view);
     }
+
+    public LiveData<String> getEventMLD() { return eventMLD; }
+    public LiveData<EmailListView> getViewLD() { return viewMLD; }
 }

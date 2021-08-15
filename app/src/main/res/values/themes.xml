@@ -30,4 +30,19 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="Text.email.subject" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Text.email.label" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/appBlue</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Text.email.from" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@color/appDarkBlue</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>

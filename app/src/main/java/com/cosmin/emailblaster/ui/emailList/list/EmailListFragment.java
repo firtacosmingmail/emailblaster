@@ -46,7 +46,7 @@ public class EmailListFragment extends Fragment implements LifecycleObserver {
     public void onCreated(){
         mViewModel = new ViewModelProvider(this).get(EmailListViewModel.class);
         binding.setVm(mViewModel);
-        mViewModel.viewLD.observe(this, emailListView -> {
+        mViewModel.getViewLD().observe(this, emailListView -> {
 
             if ( emailListView.emails != null && emailListView.emails.size() > 0) {
                 EmailListAdapter adapter = new EmailListAdapter();
@@ -57,7 +57,7 @@ public class EmailListFragment extends Fragment implements LifecycleObserver {
             binding.setView(emailListView);
             binding.executePendingBindings();
         });
-        mViewModel.eventLD.observe(this, destination -> {
+        mViewModel.getEventMLD().observe(this, destination -> {
             NavHostFragment.findNavController(EmailListFragment.this)
                     .navigate(R.id.action_emailListFragment_to_emailFragment);
         });

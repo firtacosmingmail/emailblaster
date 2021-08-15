@@ -1,10 +1,13 @@
 package com.cosmin.emailblaster.data.model;
 
+import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
+import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
+
 public class Email {
     EmailSender sender;
     String message;
     String subject;
-
+    String uniqueID;
     public Email(
             EmailSender sender,
             String message,
@@ -16,6 +19,18 @@ public class Email {
 
     public Email(){
 
+    }
+
+    public Email(EmailMessage fromEmailMessage) throws ServiceLocalException {
+        this(
+                new EmailSender(
+                        fromEmailMessage.getSender().getName(),
+                        fromEmailMessage.getSender().getAddress()
+                ),
+                fromEmailMessage.getBody().toString(),
+                fromEmailMessage.getSubject()
+        );
+        uniqueID = fromEmailMessage.getId().getUniqueId();
     }
 
     public EmailSender getSender() {

@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/emailListFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.cosmin.emailblaster.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/emailListFragment"
+        android:name="com.cosmin.emailblaster.ui.emailList.list.EmailListFragment"
+        android:label="@string/email_list_title" >
         <action
-            android:id="@+id/action_FirstFragment_to_emailListFragment"
-            app:destination="@id/emailListFragment" />
+            android:id="@+id/action_emailListFragment_to_emailFragment"
+            app:destination="@id/emailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/emailListFragment"
-        android:name="com.cosmin.emailblaster.ui.emailList.EmailListFragment"
-        android:label="EmailListFragment" >
+        android:id="@+id/emailFragment"
+        android:name="com.cosmin.emailblaster.ui.emailList.details.EmailFragment"
+        android:label="@string/email_title"
+        tools:layout="@layout/email_fragment" >
         <action
-            android:id="@+id/action_emailListFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_emailFragment_to_emailListFragment"
+            app:destination="@id/emailListFragment" />
     </fragment>
 </navigation>

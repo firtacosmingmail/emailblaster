@@ -12,6 +12,7 @@ public class LoginFormState {
     public Integer passwordError;
     public boolean isDataValid;
     private boolean loading;
+    private Integer generalError;
 
     LoginFormState(@Nullable Integer emailError, @Nullable Integer passwordError) {
         this.emailError = emailError;
@@ -24,6 +25,7 @@ public class LoginFormState {
         this.passwordError = null;
         this.isDataValid = isDataValid;
     }
+    LoginFormState() {}
 
     @Nullable
     Integer getEmailError() {
@@ -45,5 +47,13 @@ public class LoginFormState {
 
     public void setLoading(boolean loading) {
         this.loading = loading;
+    }
+
+    public Integer getGeneralError() {
+        return generalError;
+    }
+
+    public void setGeneralError(Integer generalError) {
+        this.generalError = generalError;
     }
 }

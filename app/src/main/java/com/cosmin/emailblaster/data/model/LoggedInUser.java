@@ -5,19 +5,19 @@ package com.cosmin.emailblaster.data.model;
  */
 public class LoggedInUser {
 
-    private String userId;
-    private String displayName;
+    private String password;
+    private String email;
 
-    public LoggedInUser(String userId, String displayName) {
-        this.userId = userId;
-        this.displayName = displayName;
+    public LoggedInUser(String email, String password) {
+        this.password = password;
+        this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getPassword() {
+        return password;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getEmail() {
+        return email;
     }
 }

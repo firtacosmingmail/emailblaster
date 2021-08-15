@@ -14,13 +14,8 @@
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:label="@string/title_activity_splash"
-            android:theme="@style/Theme.EmailBlaster.NoActionBar" />
-        <activity
-            android:name=".ui.auth.AuthActivity"
-            android:exported="true"
-            android:label="@string/title_activity_auth"
-            android:theme="@style/Theme.EmailBlaster.NoActionBar">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.EmailBlaster.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,15 +23,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.emailList.EmailActivity"
-            android:exported="true"
-            android:label="@string/app_name"
+            android:name=".ui.auth.AuthActivity"
+            android:exported="false"
             android:theme="@style/Theme.EmailBlaster.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.emailList.EmailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.EmailBlaster.NoActionBar">
         </activity>
     </application>
 

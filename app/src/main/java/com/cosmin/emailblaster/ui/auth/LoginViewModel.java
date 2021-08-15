@@ -32,9 +32,11 @@ public class LoginViewModel extends ViewModel {
         loginResult.addSource(loginRepository.ldUser, result -> {
             hideLoading();
             if ( result != null ) {
-                loginResult.setValue(new LoginResult(new LoggedInUserView(result.getDisplayName())));
+                loginResult.setValue(new LoginResult(new LoggedInUserView(result.getUser().getEmail())));
             } else {
-                loginResult.setValue(new LoginResult(R.string.login_failed));
+                LoginFormState state = new LoginFormState();
+                state.setGeneralError(R.string.error_logging_in);
+                loginFormState.setValue(state);
             }
         });
     }

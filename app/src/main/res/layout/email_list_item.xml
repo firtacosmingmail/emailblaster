@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="email"
+            type="com.cosmin.emailblaster.data.model.Email" />
+    </data>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="5dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/lbl_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/from"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="someone@email.com"
+            android:text="@{email.sender.name != null ? email.sender.name : email.sender.address}"
+            app:layout_constraintStart_toEndOf="@id/lbl_from"
+            app:layout_constraintBottom_toBottomOf="@id/lbl_from"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:layout_constraintTop_toBottomOf="@id/txt_from"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="The subject of the email"
+            android:text="@{email.subject}"
+            style="@style/TextAppearance.AppCompat.Body1"
+            />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:lines="3"
+            app:layout_constraintTop_toBottomOf="@id/txt_subject"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:ellipsize="end"
+            tools:text="This is the content of the email.asdlf asd;nf;a skdnf;ja ns;dlknlkasldn f;as It might be very long but it will be cut short with elipses asdkjnfl aksdjfhlkja sdflkjas lkjahsdklj hadslkjf alskjdhfl; as;kabs ldkna sl;j"
+            app:htmlText="@{email.message}"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+</layout>

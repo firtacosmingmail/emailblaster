@@ -21,4 +21,11 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="loading">Loading you emails&#8230;</string>
+    <string name="inbox">Inbox:</string>
+    <string name="from">From: </string>
+    <string name="error_getting_emails" >We encountered an error fetching the emails.</string>
+    <string name="logout">Logout</string>
+    <string name="error_logging_in">Error Loging in. Please try again.</string>
+    <string name="email_list_title">Inbox</string>
+    <string name="email_title">Email</string>
 </resources>

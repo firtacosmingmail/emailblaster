@@ -1,4 +1,4 @@
-package com.cosmin.emailblaster.ui.emailList;
+package com.cosmin.emailblaster.ui.emailList.list;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
@@ -19,6 +19,9 @@ import android.view.ViewGroup;
 import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.databinding.EmailListFragmentBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class EmailListFragment extends Fragment implements LifecycleObserver {
 
     private EmailListViewModel mViewModel;
@@ -33,6 +36,9 @@ public class EmailListFragment extends Fragment implements LifecycleObserver {
                              @Nullable Bundle savedInstanceState) {
         binding = EmailListFragmentBinding.inflate(getLayoutInflater());
         getViewLifecycleOwner().getLifecycle().addObserver(this);
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.email_list_title);
+        }
         return binding.getRoot();
     }
 
@@ -41,12 +47,19 @@ public class EmailListFragment extends Fragment implements LifecycleObserver {
         mViewModel = new ViewModelProvider(this).get(EmailListViewModel.class);
         binding.setVm(mViewModel);
         mViewModel.viewLD.observe(this, emailListView -> {
+
+            if ( emailListView.emails != null && emailListView.emails.size() > 0) {
+                EmailListAdapter adapter = new EmailListAdapter();
+                adapter.setEmails(emailListView.emails);
+                binding.setAdapter(adapter);
+            }
+
             binding.setView(emailListView);
             binding.executePendingBindings();
         });
         mViewModel.eventLD.observe(this, destination -> {
             NavHostFragment.findNavController(EmailListFragment.this)
-                    .navigate(R.id.action_emailListFragment_to_FirstFragment);
+                    .navigate(R.id.action_emailListFragment_to_emailFragment);
         });
         mViewModel.fragmentCreated();
     }

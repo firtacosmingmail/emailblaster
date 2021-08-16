@@ -29,6 +29,8 @@
         />
 
     <androidx.fragment.app.FragmentContainerView
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
         android:id="@+id/emailDetailsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -26,6 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/emailDetailsFragment"
             app:layout_constraintHorizontal_weight="1"
+            android:layout_marginEnd="5dp"
             />
 
         <androidx.fragment.app.FragmentContainerView

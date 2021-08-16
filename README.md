@@ -18,6 +18,12 @@ It would be injected into the `Fragment` or `Activitie` `ViewModels` that would 
 I got to use it in the [display-email branch](https://github.com/firtacosmingmail/emailblaster/tree/display-email) because after that I changed the implementation of the list to details navigation.
 * All the data within the project flows using `LiveData` objects, from the repository all the way to the view.
 * The data classes are help in `Singletons` by `Hilt` and injected in the objects that use them.
+
+## Git
+I used `GitFlow` for the implementations. 
+I created branches for every feature I implemented and merged those branches from PR's using Squash. 
+For [the authentication branch](https://github.com/firtacosmingmail/emailblaster/tree/authentication) I did not use Squash because it contained only 2 commits and they represented important steps in the implementation process. I just merged it because I wanted those steps to be visible in the `main` branch.
+Usually after merging I delete the branches but this time I did not do that so that the progress is visible.
   
 ## What needs to be added
 

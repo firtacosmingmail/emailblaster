@@ -11,6 +11,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class BindingAdapters {
 
 
@@ -29,7 +32,14 @@ public class BindingAdapters {
     @BindingAdapter("htmlText")
     public static void setHTMLTextStringId(AppCompatTextView view, String htmlText) {
         if (htmlText != null) {
-            view.setText(Html.fromHtml(htmlText, Html.FROM_HTML_MODE_COMPACT));
+            String textToPrint = htmlText;
+            String patten = "<[bB][oO][dD][yY]>(.*)<\\/[bB][oO][dD][yY]>";
+            Pattern neRegex = Pattern.compile(patten);
+            Matcher neMatcher = neRegex.matcher(htmlText);
+            if (neMatcher.find()) {
+                textToPrint = neMatcher.group(0);
+            }
+            view.setText(Html.fromHtml(textToPrint, Html.FROM_HTML_MODE_COMPACT));
         }
     }
 

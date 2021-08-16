@@ -1,16 +1,18 @@
 package com.cosmin.emailblaster.utils;
 
+import android.text.Html;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BindingAdapters {
 
@@ -19,23 +21,31 @@ public class BindingAdapters {
     public static void setErrorMessage(TextInputLayout view, String errorMessage) {
         view.setError(errorMessage);
     }
+
     @BindingAdapter("errorStringID")
     public static void setErrorMessage(TextInputLayout view, Integer errorStringID) {
-        if ( errorStringID!= null ) {
+        if (errorStringID != null) {
             view.setError(view.getContext().getText(errorStringID));
         }
     }
 
     @BindingAdapter("htmlText")
     public static void setHTMLTextStringId(AppCompatTextView view, String htmlText) {
-        if ( htmlText != null ) {
-            view.setText(HtmlCompat.fromHtml(htmlText, 0));
+        if (htmlText != null) {
+            String textToPrint = htmlText;
+            String patten = "<[bB][oO][dD][yY]>(.*)<\\/[bB][oO][dD][yY]>";
+            Pattern neRegex = Pattern.compile(patten);
+            Matcher neMatcher = neRegex.matcher(htmlText);
+            if (neMatcher.find()) {
+                textToPrint = neMatcher.group(0);
+            }
+            view.setText(Html.fromHtml(textToPrint, Html.FROM_HTML_MODE_COMPACT));
         }
     }
 
     @BindingAdapter("htmlText")
     public static void setHTMLTextToWebView(WebView view, String htmlText) {
-        if ( htmlText != null ) {
+        if (htmlText != null) {
             view.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
             view.getSettings().setUseWideViewPort(false);
             String mimeType = "text/html";
@@ -48,26 +58,26 @@ public class BindingAdapters {
 
     @BindingAdapter("text")
     public static void setTextStringId(AppCompatTextView view, Integer stringID) {
-        if ( stringID != null ) {
+        if (stringID != null) {
             view.setText(view.getContext().getText(stringID));
         }
     }
 
     @BindingAdapter("adapter")
     public static void setRecyclerViewAdapter(RecyclerView recView, BindableRecyclerViewAdapter adapter) {
-        if ( adapter != null ) {
+        if (adapter != null) {
             adapter.bindRecyclerView(recView);
         }
     }
 
 
     @BindingAdapter("onRefresh")
-    public static void onRefresh(SwipeRefreshLayout layout, SwipeRefreshLayout.OnRefreshListener listener){
+    public static void onRefresh(SwipeRefreshLayout layout, SwipeRefreshLayout.OnRefreshListener listener) {
         layout.setOnRefreshListener(listener);
     }
 
     @BindingAdapter("isRefreshing")
-    public static void SwipeRefreshLayoutLoading(SwipeRefreshLayout layout, Boolean isRefreshing){
-        layout.setRefreshing( isRefreshing );
+    public static void SwipeRefreshLayoutLoading(SwipeRefreshLayout layout, Boolean isRefreshing) {
+        layout.setRefreshing(isRefreshing);
     }
 }

@@ -9,16 +9,18 @@ public class Email {
     String subject;
 
     String uniqueID;
+    String displayTo;
+
     public Email(
             EmailSender sender,
             String message,
-            String subject){
+            String subject) {
         this.sender = sender;
         this.message = message;
         this.subject = subject;
     }
 
-    public Email(){
+    public Email() {
 
     }
 
@@ -31,6 +33,7 @@ public class Email {
                 fromEmailMessage.getBody().toString(),
                 fromEmailMessage.getSubject()
         );
+        displayTo = fromEmailMessage.getDisplayTo();
         uniqueID = fromEmailMessage.getId().getUniqueId();
     }
 
@@ -64,5 +67,13 @@ public class Email {
 
     public void setUniqueID(String uniqueID) {
         this.uniqueID = uniqueID;
+    }
+
+    public String getDisplayTo() {
+        return displayTo;
+    }
+
+    public void setDisplayTo(String displayTo) {
+        this.displayTo = displayTo;
     }
 }

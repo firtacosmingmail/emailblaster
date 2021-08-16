@@ -36,7 +36,7 @@ public class EmailListViewModel extends ViewModel implements EmailSelectedListen
     public EmailListViewModel(EmailRepository repo, NavigationViewModel navigationViewModel) {
         this.repo = repo;
         this.navVM = navigationViewModel;
-        viewMLD.addSource(repo.ldEmails, this::emailsReceived);
+        viewMLD.addSource(repo.getMailLiveData(), this::emailsReceived);
     }
 
     public void emailsReceived(Result<List<Email>> result) {

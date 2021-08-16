@@ -2,20 +2,19 @@ package com.cosmin.emailblaster.ui.emailList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.cosmin.emailblaster.R;
 import com.cosmin.emailblaster.databinding.ActivityMainBinding;
 import com.cosmin.emailblaster.ui.auth.AuthActivity;
+import com.cosmin.emailblaster.ui.emailList.details.EmailFragment;
 import com.cosmin.emailblaster.ui.navigation.NavigationViewModel;
 import com.cosmin.emailblaster.ui.navigation.ScreenDestinations;
 
@@ -28,10 +27,10 @@ public class EmailActivity extends AppCompatActivity {
 
     @Inject
     public NavigationViewModel navVM;
-    private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
-    private EmailViewModel vm;
+    @Inject
+    public EmailPresenter presenter;
 
     public static Intent buildIntent(Context context) {
         return new Intent(context, EmailActivity.class);
@@ -46,18 +45,51 @@ public class EmailActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        vm = new ViewModelProvider(this).get(EmailViewModel.class);
         navVM.getNavigationLD().observe(this, navigationData -> {
-            if (navigationData.getDestination() == ScreenDestinations.EMAIL_DETAILS) {
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main).navigate(R.id.action_emailListFragment_to_emailFragment, navigationData.getData());
+            if ( navigationData.getDestination() == ScreenDestinations.EMAIL_DETAILS ) {
+                showDetails(navigationData.getData());
+            } else if ( navigationData.getDestination() == ScreenDestinations.EMAILS ) {
+                showList();
             }
         });
     }
 
+    void showDetails(Bundle dataForDetails) {
+        changeDetailsVisibility(true);
+        EmailFragment fragment = (EmailFragment) getSupportFragmentManager().
+                findFragmentById(R.id.emailDetailsFragment);
+        if ( fragment != null ) {
+            fragment.update(dataForDetails);
+        }
+        presenter.detailsShown();
+        setUpOnActionbar(true);
+    }
+
+    void showList() {
+        changeDetailsVisibility(false);
+        presenter.listShown();
+        setUpOnActionbar(false);
+    }
+
+    void setUpOnActionbar(boolean isUpVisible){
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+            // if in landscape then the backbutton will not change.
+            return;
+        }
+        ActionBar actionBar = getSupportActionBar();
+        if ( actionBar != null ) {
+            actionBar.setDisplayHomeAsUpEnabled(isUpVisible);
+        }
+
+    }
+
+    void changeDetailsVisibility(boolean areDetailsVisible){
+        EmailActivityView view = new EmailActivityView();
+        view.setDisplayDetails(areDetailsVisible);
+        binding.setView(view);
+        binding.executePendingBindings();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -71,7 +103,7 @@ public class EmailActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            vm.logout();
+            presenter.logout();
             startActivity(AuthActivity.buildIntent(this));
             finish();
             return true;
@@ -82,8 +114,13 @@ public class EmailActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
+        return presenter.onUpPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!presenter.onUpPressed()) {
+            super.onBackPressed();
+        }
     }
 }

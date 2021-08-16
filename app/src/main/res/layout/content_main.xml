@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.cosmin.emailblaster.ui.navigation.ScreenDestinations"/>
+
+        <variable
+            name="view"
+            type="com.cosmin.emailblaster.ui.emailList.EmailActivityView" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <fragment
-        android:id="@+id/nav_host_fragment_content_main"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/emailListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.cosmin.emailblaster.ui.emailList.list.EmailListFragment"
+        android:tag="@string/email_list_fragment_tag"
+        tools:layout="@layout/email_list_fragment"
         app:layout_constraintTop_toTopOf="parent"
-        app:navGraph="@navigation/nav_graph" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="@{view.displayDetails ? View.INVISIBLE : View.VISIBLE}"
+        />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="10dp"
+        android:id="@+id/emailDetailsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.cosmin.emailblaster.ui.emailList.details.EmailFragment"
+        android:tag="@string/email_details_fragment_tag"
+        tools:layout="@layout/email_fragment"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="@{view.displayDetails ? View.VISIBLE : View.INVISIBLE}"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.cosmin.emailblaster.R;
@@ -15,7 +14,6 @@ import com.cosmin.emailblaster.data.Result;
 import com.cosmin.emailblaster.data.model.Email;
 import com.cosmin.emailblaster.ui.navigation.NavigationData;
 import com.cosmin.emailblaster.ui.navigation.NavigationViewModel;
-import com.cosmin.emailblaster.utils.SingleLiveEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,6 @@ public class EmailListViewModel extends ViewModel implements EmailSelectedListen
 
     private final EmailRepository repo;
     private final NavigationViewModel navVM;
-    private final MutableLiveData<String> eventMLD = new MutableLiveData<>();
     private final MediatorLiveData<EmailListView> viewMLD = new MediatorLiveData<>();
     private List<Email> emailList;
 
@@ -80,7 +77,6 @@ public class EmailListViewModel extends ViewModel implements EmailSelectedListen
         viewMLD.postValue(view);
     }
 
-    public LiveData<String> getEventMLD() { return eventMLD; }
     public LiveData<EmailListView> getViewLD() { return viewMLD; }
 
     @Override

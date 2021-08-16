@@ -33,6 +33,15 @@ Unfortunately I did not have more time to spend on the project, so here are some
 * Improved error management
 
 ## ews-android-api
+
+### How it's used
+The communication with `ews-android-api` is made in `~/data/EmailDataSource.java` file.  
+I hardest part from using the library was to find out what URL to use for the account. My personal Microsoft account is linked to a `yahoo` email and using that account crashed the autodiscovery feature.
+Until I created a new account i tried with different manual `URLs` but they did not work.
+I added my test account details autocompleted in the authentication form, **But** I am **very** curious how it works with your accounts.
+Also very pour documentation on how to fetch email content, it took me a while to find about `PropertySet` class and the `bind` method on the `EmailMessage`.  
+
+### Integration
 ews-android-api is added as a git dubmodule to the project
 to get the submodule run the following commands:
 ```

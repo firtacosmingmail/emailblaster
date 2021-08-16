@@ -23,15 +23,14 @@ public class EmailRepository {
     private ArrayList<Email> emailList = null;
 
     private final MediatorLiveData<Result<List<Email>>> mldEmails = new MediatorLiveData<>();
-    public LiveData<Result<List<Email>>> ldEmails = mldEmails;
 
     public EmailRepository(EmailDataSource dataSource, UserContext userContext) {
         this.dataSource = dataSource;
         this.userContext = userContext;
-        mldEmails.addSource(dataSource.LDInboxEmails, this::saveEmails);
+        mldEmails.addSource(dataSource.getInboxEmailLD(), this::saveEmails);
     }
 
-    private void saveEmails(Result result) {
+    public void saveEmails(Result result) {
         if ( result instanceof Result.Success ) {
             List<EmailMessage> emailList = ((Result.Success<List<EmailMessage>>) result).getData();
             emails = new HashMap<>();
@@ -58,11 +57,12 @@ public class EmailRepository {
         } else {
             mldEmails.postValue(new Result.Success<>(emailList));
         }
-        return ldEmails;
+        return mldEmails;
     }
 
     public Email getEmail(String uniqueID) {
         return emails.get(uniqueID);
     }
+    public LiveData<Result<List<Email>>> getMailLiveData() { return mldEmails; }
 
 }

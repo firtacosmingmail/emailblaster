@@ -30,4 +30,5 @@
     <string name="email_title">Email</string>
     <string name="email_list_fragment_tag">EmailListFragmentTag</string>
     <string name="email_details_fragment_tag">EmailDetailsFragmentTag</string>
+    <string name="to">To: </string>
 </resources>

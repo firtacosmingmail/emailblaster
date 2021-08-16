@@ -27,6 +27,8 @@ public class LoginViewModel extends ViewModel {
 
     @Inject
     LoginViewModel(LoginRepository loginRepository) {
+        email.set("testCosminf@outlook.com");
+        password.set("as23df45");
         this.loginRepository = loginRepository;
 
         loginResult.addSource(loginRepository.ldUser, result -> {

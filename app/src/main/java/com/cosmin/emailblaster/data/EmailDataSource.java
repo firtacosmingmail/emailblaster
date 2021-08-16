@@ -29,10 +29,8 @@ import microsoft.exchange.webservices.data.search.ItemView;
  */
 public class EmailDataSource {
     private MutableLiveData<Result<ExchangeService>> mLDUser = new MutableLiveData<>();
-    public LiveData<Result<ExchangeService>> LDUser = mLDUser;
 
     private MutableLiveData<Result<List<EmailMessage>>> mLDInboxEmails = new MutableLiveData<>();
-    public LiveData<Result<List<EmailMessage>>> LDInboxEmails = mLDInboxEmails;
 
     public LiveData<Result<ExchangeService>> login(String email, String password) {
 
@@ -40,7 +38,7 @@ public class EmailDataSource {
             executeLogin(email, password );
         }).start();
 
-        return LDUser;
+        return mLDUser;
     }
 
     private void executeLogin(String email, String password) {
@@ -63,7 +61,7 @@ public class EmailDataSource {
             executeFetchEmails( service );
         }).start();
 
-        return LDInboxEmails;
+        return mLDInboxEmails;
     }
 
     private void executeFetchEmails(ExchangeService service) {
@@ -78,6 +76,7 @@ public class EmailDataSource {
                     propSet.add(ItemSchema.Subject);
                     propSet.add(ItemSchema.MimeContent);
                     propSet.add(ItemSchema.Id);
+                    propSet.add(ItemSchema.DisplayTo);
                     EmailMessage em = EmailMessage.bind(service, item.getId(), propSet);
                     emails.add(em);
                 }
@@ -88,4 +87,6 @@ public class EmailDataSource {
         }
     }
 
+    public LiveData<Result<List<EmailMessage>>> getInboxEmailLD(){ return mLDInboxEmails; }
+    public LiveData<Result<ExchangeService>> getUserLD() { return mLDUser; }
 }

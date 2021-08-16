@@ -31,7 +31,7 @@ public class LoginRepository {
 
     public LiveData<UserContext> login(String email, String password) {
         mldLogin.addSource(dataSource.login(email, password), result -> {
-            mldLogin.removeSource(dataSource.LDUser);
+            mldLogin.removeSource(dataSource.getUserLD());
             if ( result.getClass() == Result.Success.class){
                 userContext.saveContext(email, password, ((Result.Success<ExchangeService>) result).getData());
                 mldLogin.postValue(userContext);

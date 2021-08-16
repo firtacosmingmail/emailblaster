@@ -31,6 +31,8 @@ Unfortunately I did not have more time to spend on the project, so here are some
 * Unit tests 
 * Local storage of the user credentials
 * Improved error management
+* Mark an opened email ar read after opening
+* Mark unread emails on the list. 
 
 ## ews-android-api
 
